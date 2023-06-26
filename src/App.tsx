@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { ToDoList, ToDoListProps } from "./components/ToDoList";
+const App = () => {
+  const [toDoArray, setToDoArray] = useState([
+    {
+      name: "Помыть деда",
+    },
+  ]);
+  const [inputValue, setInputValue] = useState("");
 
-function App() {
+  function deleteToDo(index: number) {
+    const filteredArray = toDoArray.filter((item, i) => i !== index);
+    setToDoArray(filteredArray);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input onChange={(e) => setInputValue(e.target.value)}></input>
+      <button
+        onClick={() =>
+          setToDoArray((prevState) => [...prevState, { name: inputValue }])
+        }
+      >
+        Добавить задание
+      </button>
+      {toDoArray.map((toDo, index) => {
+        return (
+          <ToDoList
+            key={index}
+            name={toDo.name}
+            number={index + 1}
+            onDelete={() => deleteToDo(index)}
+          />
+        );
+      })}
     </div>
   );
-}
+};
 
 export default App;
