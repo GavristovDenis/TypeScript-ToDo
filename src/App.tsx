@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ToDoList, ToDoListProps } from "./components/ToDoList";
+import { ToDoList } from "./components/ToDoList";
+
 const App = () => {
   const [toDoArray, setToDoArray] = useState([
     {
@@ -10,6 +11,15 @@ const App = () => {
   const [editMode, setEditMode] = useState(false);
   const [editText, setEditText] = useState("");
   const [foundIndex, setFoundIndex] = useState(0);
+
+  function addToDo() {
+    if (inputValue === "") {
+    } else {
+      setToDoArray((prevState) => [...prevState, { name: inputValue }]);
+      setInputValue("");
+    }
+  }
+
   function deleteToDo(index: number) {
     const filteredArray = toDoArray.filter((item, i) => i !== index);
     setToDoArray(filteredArray);
@@ -32,31 +42,51 @@ const App = () => {
       {editMode ? (
         <div className="editModal">
           <div className="modalContent">
-            <input onChange={(e) => setEditText(e.target.value)}></input>
+            <div className="form__group field">
+              <input
+                className="form__field"
+                placeholder="Введите задание!"
+                id="name"
+                onChange={(e) => setEditText(e.target.value)}
+              />
+              <label htmlFor="name" className="form__label">
+                Введите новый текст
+              </label>
+            </div>
             <button onClick={() => editToDo()}>Готово!</button>
           </div>
         </div>
       ) : null}
 
-      <input onChange={(e) => setInputValue(e.target.value)}></input>
-      <button
-        onClick={() =>
-          setToDoArray((prevState) => [...prevState, { name: inputValue }])
-        }
-      >
-        Добавить задание
-      </button>
-      {toDoArray.map((toDo, index) => {
-        return (
-          <ToDoList
-            key={index}
-            name={toDo.name}
-            number={index + 1}
-            onDelete={() => deleteToDo(index)}
-            onEdit={() => turnEditModeOn(index)}
-          />
-        );
-      })}
+      <div className="content">
+        <div className="inputBox">
+          <div className="form__group field">
+            <input
+              className="form__field"
+              placeholder="Введите задание!"
+              id="name"
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+            <label htmlFor="name" className="form__label">
+              Введите задание!
+            </label>
+          </div>
+          <button onClick={() => addToDo()}>Добавить задание</button>
+        </div>
+        <div className="todos">
+          {toDoArray.map((toDo, index) => {
+            return (
+              <ToDoList
+                key={index}
+                name={toDo.name}
+                number={index + 1}
+                onDelete={() => deleteToDo(index)}
+                onEdit={() => turnEditModeOn(index)}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

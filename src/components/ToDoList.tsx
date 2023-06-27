@@ -1,5 +1,7 @@
 import React, { FC } from "react";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { createMuiTheme } from "@mui/material";
 export interface ToDoListProps {
   name: string;
   number: number;
@@ -15,11 +17,16 @@ export const ToDoList: FC<ToDoListProps> = ({
 }) => {
   return (
     <div className="toDoList">
-      <div>
-        {number}. {name}
+      <div className="toDoTextContainer">
+        <div className="toDoText">
+          {number}. {name}
+        </div>
       </div>
-      <button onClick={onDelete}>Удалить</button>
-      <button onClick={onEdit}>Редактировать</button>
+      <div className="buttonSection">
+        <EditIcon className="editButton" onClick={onEdit} />
+
+        <DeleteIcon className="deleteButton" onClick={onDelete} />
+      </div>
     </div>
   );
 };
